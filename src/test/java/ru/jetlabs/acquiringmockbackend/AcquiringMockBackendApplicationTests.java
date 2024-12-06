@@ -1,4 +1,4 @@
-package org.example.acquiringmockbackend;
+package ru.jetlabs.acquiringmockbackend;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

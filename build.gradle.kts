@@ -4,8 +4,7 @@ plugins {
     id("io.spring.dependency-management") version "1.1.6"
 }
 
-group = "org.example"
-version = "0.0.1-SNAPSHOT"
+group = "ru.jetlabs"
 
 java {
     toolchain {
