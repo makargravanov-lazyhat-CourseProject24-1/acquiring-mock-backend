@@ -13,6 +13,6 @@ public class UserController {
 
     @PostMapping("/register")
     ResponseEntity<?> register(@RequestBody RegisterUserDto dto){
-
+        return ResponseEntity.internalServerError().build();
     }
 }
