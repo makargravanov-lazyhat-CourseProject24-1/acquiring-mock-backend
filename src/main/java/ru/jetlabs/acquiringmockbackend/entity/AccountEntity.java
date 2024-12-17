@@ -3,9 +3,10 @@ package ru.jetlabs.acquiringmockbackend.entity;
 import jakarta.persistence.*;
 import lombok.Data;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.AccountTypes;
-import ru.jetlabs.acquiringmockbackend.util.TimeUtil;
 
 import java.time.LocalDateTime;
+
+import static ru.jetlabs.acquiringmockbackend.util.TimeUtil.nowBetweenOf;
 
 @Data
 @Entity
@@ -30,6 +31,6 @@ public class AccountEntity {
     private AccountTypes accountType;
 
     public boolean isActive(){
-        return expirationDate == null || TimeUtil.nowBetweenOf(creationDate, expirationDate);
+        return expirationDate == null || nowBetweenOf(creationDate, expirationDate);
     }
 }
