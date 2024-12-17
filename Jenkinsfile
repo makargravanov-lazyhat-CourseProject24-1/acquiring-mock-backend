@@ -31,7 +31,7 @@ pipeline {
                         echo "Container does not exists."
                     }
                 }
-                sh "sudo docker run --detach --name ${SERVICE_NAME} -e HTTP_PORT=${HTTP_PORT} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} --network=service_postgresql--service --network=service_kafka--service jetlabs/${SERVICE_NAME}:latest"
+                sh "sudo docker run --detach --name ${SERVICE_NAME} -e HTTP_PORT=${HTTP_PORT} -e DB_URL=${DB_URL} -e DB_USERNAME=${DB_USERNAME} -e DB_PASSWORD=${DB_PASSWORD} --network=service_postgresql--service --network=service_kafka--service --network=service_nginx--acquiring-mock-backend jetlabs/${SERVICE_NAME}:latest"
             }
         }
     }
