@@ -17,6 +17,9 @@ spring:
     username: "user"
     password: "mypassword"
 
+jwt:
+  lifetime: 30
+
 server:
   port: 8080
 
