@@ -28,6 +28,7 @@ dependencies {
     implementation("org.springframework.kafka:spring-kafka")
     implementation("org.springframework.security:spring-security-crypto")
     implementation("jakarta.validation:jakarta.validation-api")
+    implementation("org.apache.commons:commons-lang3")
     implementation("com.auth0:java-jwt:4.2.1")
     compileOnly("org.projectlombok:lombok")
     runtimeOnly("org.postgresql:postgresql")
