@@ -6,6 +6,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.jetlabs.acquiringmockbackend.model.dto.LoginUserDto;
+import ru.jetlabs.acquiringmockbackend.model.dto.PayParamDto;
 import ru.jetlabs.acquiringmockbackend.model.dto.RegisterUserDto;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
 import ru.jetlabs.acquiringmockbackend.service.JWTCookieGenerator;
@@ -46,6 +47,14 @@ public class UnsecuredController {
     @GetMapping("/check-status-pay-processing/uuid={uuid}")
     ResponseEntity<?> checkStatusPayProcessing(@PathVariable String uuid){
         return userService.checkStatusPayProcessing(uuid);
+    }
+    @GetMapping("/uuid={uuid}")
+    ResponseEntity<?> getPaymentPanel(@PathVariable String uuid){
+        return userService.getPaymentPanel(uuid);
+    }
+    @PostMapping("uuid={uuid}")
+    ResponseEntity<?> pay(@PathVariable String uuid, @RequestBody PayParamDto payParam){
+        return userService.pay(uuid, payParam);
     }
 
     private ResponseEntity<?> OK(Long id){
