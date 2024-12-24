@@ -44,12 +44,9 @@ public class UnsecuredController {
     }
 
     @GetMapping("/check-status-pay-processing/uuid={uuid}")
-    ResponseEntity<TransactionStatuses> checkStatusPayProcessing(@PathVariable String uuid){
-
+    ResponseEntity<?> checkStatusPayProcessing(@PathVariable String uuid){
+        return userService.checkStatusPayProcessing(uuid);
     }
-
-
-
 
     private ResponseEntity<?> OK(Long id){
         return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, generator.create(id,"jwt", jwtGenerator)).build();

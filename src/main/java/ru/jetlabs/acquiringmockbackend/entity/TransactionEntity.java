@@ -5,6 +5,7 @@ import lombok.Data;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Data
 @Entity
@@ -29,4 +30,15 @@ public class TransactionEntity {
     private TransactionStatuses transactionStatus;
     @Column(nullable = false)
     private LocalDateTime transactionDate;
+
+    public static TransactionEntity createTransaction(Double total, AccountEntity fromAccount, AccountEntity toAccount, TransactionStatuses transactionStatus, Integer minutesToExpire) {
+        TransactionEntity transaction = new TransactionEntity();
+        transaction.setUuid(UUID.randomUUID().toString());
+        transaction.setTotal(total);
+        transaction.setFromAccount(fromAccount);
+        transaction.setToAccount(toAccount);
+        transaction.setTransactionStatus(transactionStatus);
+        transaction.setTransactionDate(LocalDateTime.now().plusMinutes(minutesToExpire));
+        return transaction;
+    }
 }

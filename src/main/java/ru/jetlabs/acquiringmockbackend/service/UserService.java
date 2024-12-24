@@ -11,6 +11,7 @@ import ru.jetlabs.acquiringmockbackend.model.dto.AccountDto;
 import ru.jetlabs.acquiringmockbackend.model.dto.LoginUserDto;
 import ru.jetlabs.acquiringmockbackend.model.dto.RegisterUserDto;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.AccountTypes;
+import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
 import ru.jetlabs.acquiringmockbackend.repository.AccountRepository;
 import ru.jetlabs.acquiringmockbackend.repository.TransactionRepository;
 import ru.jetlabs.acquiringmockbackend.repository.UserRepository;
@@ -87,6 +88,21 @@ public class UserService {
         if(opt.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
-        transactionRepository.save(new TransactionEntity())
+        TransactionEntity saved = transactionRepository.save(TransactionEntity
+                .createTransaction(amount,
+                        null,
+                        opt.get(),
+                        TransactionStatuses.CREATED,
+                        15));
+        return ResponseEntity.ok(saved.getUuid());
+    }
+
+
+    public ResponseEntity<?> checkStatusPayProcessing(String uuid) {
+        Optional<TransactionEntity> opt = transactionRepository.findByUuid(uuid);
+        if(opt.isEmpty()){
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(opt.get().getTransactionStatus());
     }
 }
