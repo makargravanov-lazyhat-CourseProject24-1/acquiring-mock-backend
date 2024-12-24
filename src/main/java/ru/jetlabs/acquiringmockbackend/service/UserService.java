@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import ru.jetlabs.acquiringmockbackend.entity.AccountEntity;
+import ru.jetlabs.acquiringmockbackend.entity.TransactionEntity;
 import ru.jetlabs.acquiringmockbackend.entity.UserEntity;
 import ru.jetlabs.acquiringmockbackend.model.dto.AccountDto;
 import ru.jetlabs.acquiringmockbackend.model.dto.LoginUserDto;
@@ -86,6 +87,6 @@ public class UserService {
         if(opt.isEmpty()){
             return ResponseEntity.badRequest().build();
         }
-
+        transactionRepository.save(new TransactionEntity())
     }
 }

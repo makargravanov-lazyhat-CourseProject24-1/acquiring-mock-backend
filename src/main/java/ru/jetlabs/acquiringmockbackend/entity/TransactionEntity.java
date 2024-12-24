@@ -20,7 +20,7 @@ public class TransactionEntity {
     @Column(nullable = false)
     private Double total;
     @ManyToOne
-    @JoinColumn(name = "from_account_id", nullable = false)
+    @JoinColumn(name = "from_account_id")
     private AccountEntity fromAccount;
     @ManyToOne
     @JoinColumn(name = "to_account_id", nullable = false)
