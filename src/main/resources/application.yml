@@ -12,10 +12,10 @@ spring:
   application:
     name: acquiring-mock-backend
   datasource:
-    url: "jdbc:postgresql://193.222.62.125:5432/${spring.application.name}"
+    url: "jdbc:postgresql://${DB_URL}/${spring.application.name}"
     driver-class-name: org.postgresql.Driver
-    username: "user"
-    password: "mypassword"
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
 jwt:
   lifetime: 30
