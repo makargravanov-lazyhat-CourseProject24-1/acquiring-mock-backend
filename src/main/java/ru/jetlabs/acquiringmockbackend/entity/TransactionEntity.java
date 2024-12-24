@@ -2,12 +2,15 @@ package ru.jetlabs.acquiringmockbackend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "transactions_story", indexes = {
         @Index(name = "idx_transaction_uuid", columnList = "uuid")

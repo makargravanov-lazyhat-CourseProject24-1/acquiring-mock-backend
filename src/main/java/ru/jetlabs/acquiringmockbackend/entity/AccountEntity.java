@@ -2,6 +2,8 @@ package ru.jetlabs.acquiringmockbackend.entity;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.RandomStringUtils;
 import ru.jetlabs.acquiringmockbackend.model.dto.AccountDto;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.AccountTypes;
@@ -11,7 +13,8 @@ import java.time.temporal.ChronoUnit;
 
 import static ru.jetlabs.acquiringmockbackend.util.TimeUtil.nowBetweenOf;
 
-@Data
+@Getter
+@Setter
 @Entity
 @Table(name = "accounts")
 public class AccountEntity {

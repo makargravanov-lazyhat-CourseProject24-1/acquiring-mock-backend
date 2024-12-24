@@ -32,10 +32,4 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     // Подсчет количества транзакций по статусу
     long countByTransactionStatus(TransactionStatuses status);
 
-    // Получение суммы всех успешных транзакций за период
-    @Query("SELECT SUM(t.total) FROM TransactionEntity t WHERE t.transactionStatus = 'SUCCESS' " +
-            "AND t.transactionDate BETWEEN :startDate AND :endDate")
-    Double sumSuccessfulTransactions(
-            @Param("startDate") LocalDateTime startDate,
-            @Param("endDate") LocalDateTime endDate);
 }
