@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import ru.jetlabs.acquiringmockbackend.model.dto.LoginUserDto;
 import ru.jetlabs.acquiringmockbackend.model.dto.PayParamDto;
 import ru.jetlabs.acquiringmockbackend.model.dto.RegisterUserDto;
-import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
 import ru.jetlabs.acquiringmockbackend.service.JWTCookieGenerator;
 import ru.jetlabs.acquiringmockbackend.service.JWTGenerator;
 import ru.jetlabs.acquiringmockbackend.service.UserService;

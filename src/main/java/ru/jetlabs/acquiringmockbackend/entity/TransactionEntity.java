@@ -1,10 +1,9 @@
 package ru.jetlabs.acquiringmockbackend.entity;
 
 import jakarta.persistence.*;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
-import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
+import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatus;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -30,11 +29,11 @@ public class TransactionEntity {
     @JoinColumn(name = "to_account_id", nullable = false)
     private AccountEntity toAccount;
     @Column(nullable = false)
-    private TransactionStatuses transactionStatus;
+    private TransactionStatus transactionStatus;
     @Column(nullable = false)
     private LocalDateTime transactionDate;
 
-    public static TransactionEntity createTransaction(Double total, AccountEntity fromAccount, AccountEntity toAccount, TransactionStatuses transactionStatus, Integer minutesToExpire) {
+    public static TransactionEntity createTransaction(Double total, AccountEntity fromAccount, AccountEntity toAccount, TransactionStatus transactionStatus, Integer minutesToExpire) {
         TransactionEntity transaction = new TransactionEntity();
         transaction.setUuid(UUID.randomUUID().toString());
         transaction.setTotal(total);

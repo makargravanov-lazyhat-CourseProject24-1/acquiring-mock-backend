@@ -31,7 +31,7 @@ public class SecuredController {
                 OK(extractId(request)) : BAD;
     }
 
-    @PostMapping("/create/individual")
+    @PostMapping("/create/corporate")
     ResponseEntity<?> createCorporateAccount(HttpServletRequest request) {
         return userService.createAccount(extractId(request), AccountTypes.CORPORATE) ?
                 OK(extractId(request)) : BAD;

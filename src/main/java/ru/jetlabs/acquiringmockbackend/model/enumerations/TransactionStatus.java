@@ -1,6 +1,6 @@
 package ru.jetlabs.acquiringmockbackend.model.enumerations;
 
-public enum TransactionStatuses {
+public enum TransactionStatus {
     CREATED,
     APPROVED,
     EXPIRED,

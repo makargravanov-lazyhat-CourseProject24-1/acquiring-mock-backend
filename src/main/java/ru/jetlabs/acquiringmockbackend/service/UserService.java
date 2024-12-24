@@ -10,7 +10,7 @@ import ru.jetlabs.acquiringmockbackend.entity.TransactionEntity;
 import ru.jetlabs.acquiringmockbackend.entity.UserEntity;
 import ru.jetlabs.acquiringmockbackend.model.dto.*;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.AccountTypes;
-import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
+import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatus;
 import ru.jetlabs.acquiringmockbackend.repository.AccountRepository;
 import ru.jetlabs.acquiringmockbackend.repository.TransactionRepository;
 import ru.jetlabs.acquiringmockbackend.repository.UserRepository;
@@ -92,7 +92,7 @@ public class UserService {
                 .createTransaction(amount,
                         null,
                         opt.get(),
-                        TransactionStatuses.CREATED,
+                        TransactionStatus.CREATED,
                         15));
         return ResponseEntity.ok(saved.getUuid());
     }
@@ -117,7 +117,7 @@ public class UserService {
     @Transactional
     public ResponseEntity<?> pay(String uuid, PayParamDto payParam) {
         Optional<TransactionEntity> opt = transactionRepository.findByUuid(uuid);
-        if(opt.isEmpty()||opt.get().getTransactionStatus()!=TransactionStatuses.CREATED){
+        if(opt.isEmpty()||opt.get().getTransactionStatus()!= TransactionStatus.CREATED){
             return ResponseEntity.badRequest().build();
         }
         Optional<AccountEntity> optAcc = accountRepository.findByNumber(payParam.number());
@@ -130,7 +130,7 @@ public class UserService {
             if(String.valueOf(e.getYear()).endsWith(payParam.expirationYear())&&
                     String.valueOf(e.getMonthValue()).endsWith(payParam.expirationMonth())){
                 opt.get().setFromAccount(optAcc.get());
-                opt.get().setTransactionStatus(TransactionStatuses.APPROVED);
+                opt.get().setTransactionStatus(TransactionStatus.APPROVED);
                 transactionRepository.save(opt.get());
                 return ResponseEntity.ok().build();
             }

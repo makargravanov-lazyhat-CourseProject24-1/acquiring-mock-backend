@@ -6,7 +6,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import ru.jetlabs.acquiringmockbackend.entity.AccountEntity;
 import ru.jetlabs.acquiringmockbackend.entity.TransactionEntity;
-import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatuses;
+import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatus;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -27,9 +27,9 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
 
     // Поиск транзакций по статусу и сумме больше указанной
     List<TransactionEntity> findByTransactionStatusAndTotalGreaterThan(
-            TransactionStatuses status, Double minAmount);
+            TransactionStatus status, Double minAmount);
 
     // Подсчет количества транзакций по статусу
-    long countByTransactionStatus(TransactionStatuses status);
+    long countByTransactionStatus(TransactionStatus status);
 
 }
