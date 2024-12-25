@@ -7,10 +7,15 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.jetlabs.acquiringmockbackend.service.JWTValidator;
 
 import java.io.IOException;
+import java.util.List;
 
 @Configuration
 public class SecurityConfig {
@@ -18,6 +23,22 @@ public class SecurityConfig {
 
     public SecurityConfig(JWTValidator jwtValidator) {
         this.jwtValidator = jwtValidator;
+    }
+
+    @Bean
+    public FilterRegistrationBean<CorsFilter> corsFilter() {
+        FilterRegistrationBean<CorsFilter> corsBean = new FilterRegistrationBean<>();
+        CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.addAllowedOrigin("http://localhost:5173");
+        config.addAllowedOrigin("https://pay.lazyhat.ru");
+        config.setAllowedHeaders(List.of("*"));
+        config.setAllowedMethods(List.of("GET", "POST", "OPTIONS"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", config);
+        corsBean.setFilter(new CorsFilter(source));
+        corsBean.setOrder(1);
+        return corsBean;
     }
 
     @Bean
@@ -68,7 +89,7 @@ public class SecurityConfig {
                 request.setAttribute("userIdFromFilter", id);
                 chain.doFilter(request, response);
             } else {
-                System.out.println("Unauthorized, jwt="+jwt);
+                System.out.println("Unauthorized, jwt=" + jwt);
                 httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
             }
         }
