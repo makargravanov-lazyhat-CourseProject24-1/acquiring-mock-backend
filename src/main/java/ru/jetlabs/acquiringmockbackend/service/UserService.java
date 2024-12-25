@@ -65,7 +65,7 @@ public class UserService {
 
 
     public Object addCash(Long user, Long id, Double sum) {
-        Optional<UserEntity> opt = userRepository.findById(id);
+        Optional<UserEntity> opt = userRepository.findById(user);
         if (opt.isPresent()) {
             Optional<AccountEntity> accOpt = accountRepository.findById(id);
             if(accOpt.isPresent()&&accOpt.get().getOwner().getId().equals(opt.get().getId())){
