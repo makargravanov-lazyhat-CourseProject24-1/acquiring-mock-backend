@@ -12,6 +12,7 @@ public class JWTCookieGenerator {
                 .path("/")
                 .httpOnly(true)
                 .secure(true)
+                .sameSite("NONE")
                 .build()
                 .toString();
     }
