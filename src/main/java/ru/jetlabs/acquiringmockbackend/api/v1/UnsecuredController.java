@@ -38,9 +38,9 @@ public class UnsecuredController {
         return p.getFirst() ? OK(p.getSecond()): BAD;
     }
 
-    @PostMapping("/register-pay-processing/amount={amount}/to={to}")
-    ResponseEntity<?> createPayProcessing(@PathVariable Double amount, @PathVariable String to){
-        return userService.createPayProcessing(amount, to);
+    @PostMapping("/register-pay-processing/amount={amount}/to={to}/callback-url={callbackUrl}")
+    ResponseEntity<?> createPayProcessing(@PathVariable Double amount, @PathVariable String to, @PathVariable String callbackUrl){
+        return userService.createPayProcessing(amount, to, callbackUrl);
     }
 
     @GetMapping("/check-status-pay-processing/uuid={uuid}")
@@ -51,7 +51,7 @@ public class UnsecuredController {
     ResponseEntity<?> getPaymentPanel(@PathVariable String uuid){
         return userService.getPaymentPanel(uuid);
     }
-    @PostMapping("uuid={uuid}")
+    @PostMapping("/uuid={uuid}")
     ResponseEntity<?> pay(@PathVariable String uuid, @RequestBody PayParamDto payParam){
         return userService.pay(uuid, payParam);
     }

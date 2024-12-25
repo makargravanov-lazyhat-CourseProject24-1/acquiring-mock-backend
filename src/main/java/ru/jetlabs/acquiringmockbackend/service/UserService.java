@@ -14,6 +14,7 @@ import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatus;
 import ru.jetlabs.acquiringmockbackend.repository.AccountRepository;
 import ru.jetlabs.acquiringmockbackend.repository.TransactionRepository;
 import ru.jetlabs.acquiringmockbackend.repository.UserRepository;
+import ru.jetlabs.acquiringmockbackend.util.ScheduledTaskUtil;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -25,13 +26,16 @@ public class UserService {
     private final AccountRepository accountRepository;
     private final BCryptPasswordEncoder encoder;
     private final TransactionRepository transactionRepository;
+    private final ScheduledTaskUtil scheduledTasksUtil;
 
-    public UserService(UserRepository userRepository, AccountRepository accountRepository, BCryptPasswordEncoder encoder, TransactionRepository transactionRepository) {
+    public UserService(UserRepository userRepository, AccountRepository accountRepository, BCryptPasswordEncoder encoder, TransactionRepository transactionRepository, ScheduledTaskUtil scheduledTasksUtil) {
         this.userRepository = userRepository;
         this.accountRepository = accountRepository;
         this.encoder = encoder;
         this.transactionRepository = transactionRepository;
+        this.scheduledTasksUtil = scheduledTasksUtil;
     }
+
 
     public boolean register(RegisterUserDto dto) {
         try {
@@ -59,7 +63,7 @@ public class UserService {
         }
     }
 
-    public List<AccountDto> getAccounts(Long id){
+    public List<AccountDto> getAccounts(Long id) {
         return accountRepository.findByOwnerId(id).stream().map(AccountEntity::toDto).toList();
     }
 
@@ -68,11 +72,11 @@ public class UserService {
         Optional<UserEntity> opt = userRepository.findById(user);
         if (opt.isPresent()) {
             Optional<AccountEntity> accOpt = accountRepository.findById(id);
-            if(accOpt.isPresent()&&accOpt.get().getOwner().getId().equals(opt.get().getId())){
+            if (accOpt.isPresent() && accOpt.get().getOwner().getId().equals(opt.get().getId())) {
                 accOpt.get().addBalance(sum);
                 accountRepository.save(accOpt.get());
                 return true;
-            }else {
+            } else {
                 return false;
             }
         } else {
@@ -80,12 +84,12 @@ public class UserService {
         }
     }
 
-    public ResponseEntity<?> createPayProcessing(Double amount, String to) {
-        if(amount<=0){
+    public ResponseEntity<?> createPayProcessing(Double amount, String to, String callbackUrl) {
+        if (amount <= 0) {
             return ResponseEntity.badRequest().build();
         }
         Optional<AccountEntity> opt = accountRepository.findByNumber(to);
-        if(opt.isEmpty()){
+        if (opt.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         TransactionEntity saved = transactionRepository.save(TransactionEntity
@@ -94,13 +98,14 @@ public class UserService {
                         opt.get(),
                         TransactionStatus.CREATED,
                         15));
+        scheduledTasksUtil.addTask(saved, callbackUrl);
         return ResponseEntity.ok(saved.getUuid());
     }
 
 
     public ResponseEntity<?> checkStatusPayProcessing(String uuid) {
         Optional<TransactionEntity> opt = transactionRepository.findByUuid(uuid);
-        if(opt.isEmpty()){
+        if (opt.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         return ResponseEntity.ok(opt.get().getTransactionStatus());
@@ -108,30 +113,30 @@ public class UserService {
 
     public ResponseEntity<?> getPaymentPanel(String uuid) {
         Optional<TransactionEntity> opt = transactionRepository.findByUuid(uuid);
-        if(opt.isEmpty()){
+        if (opt.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
-        return ResponseEntity.ok(new PaymentDto(opt.get().getTotal(),opt.get().getTransactionDate()));
+        return ResponseEntity.ok(new PaymentDto(opt.get().getTotal(), opt.get().getTransactionDate()));
     }
 
     @Transactional
     public ResponseEntity<?> pay(String uuid, PayParamDto payParam) {
         Optional<TransactionEntity> opt = transactionRepository.findByUuid(uuid);
-        if(opt.isEmpty()||opt.get().getTransactionStatus()!= TransactionStatus.CREATED){
+        if (opt.isEmpty() || opt.get().getTransactionStatus() != TransactionStatus.CREATED) {
             return ResponseEntity.badRequest().build();
         }
         Optional<AccountEntity> optAcc = accountRepository.findByNumber(payParam.number());
-        if(optAcc.isEmpty()){
+        if (optAcc.isEmpty()) {
             return ResponseEntity.badRequest().build();
         }
         AccountEntity a = optAcc.get();
-        if(a.getCvv().equals(payParam.cvv())&&a.isActive()){
+        if (a.getCvv().equals(payParam.cvv()) && a.isActive()) {
             LocalDateTime e = a.getExpirationDate();
-            if(String.valueOf(e.getYear()).endsWith(payParam.expirationYear())&&
-                    String.valueOf(e.getMonthValue()).endsWith(payParam.expirationMonth())){
+            if (String.valueOf(e.getYear()).endsWith(payParam.expirationYear()) &&
+                    e.getMonthValue() == Integer.parseInt(payParam.expirationMonth())) {
                 opt.get().setFromAccount(optAcc.get());
                 opt.get().setTransactionStatus(TransactionStatus.APPROVED);
-                transactionRepository.save(opt.get());
+                scheduledTasksUtil.sendCallbackManually(transactionRepository.save(opt.get()));
                 return ResponseEntity.ok().build();
             }
         }
