@@ -68,6 +68,7 @@ public class SecurityConfig {
                 request.setAttribute("userIdFromFilter", id);
                 chain.doFilter(request, response);
             } else {
+                System.out.println("Unauthorized, jwt ="+jwt);
                 httpResponse.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid JWT token");
             }
         }
