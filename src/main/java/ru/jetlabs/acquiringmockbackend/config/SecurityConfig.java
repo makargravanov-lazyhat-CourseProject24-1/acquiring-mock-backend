@@ -25,7 +25,7 @@ public class SecurityConfig {
         FilterRegistrationBean<JWTFilter> registrationBean = new FilterRegistrationBean<>();
         registrationBean.setFilter(new JWTFilter(jwtValidator));
         registrationBean.addUrlPatterns("/acquiring-mock-backend/api/v1/secured/*");
-        registrationBean.setOrder(1);
+        registrationBean.setOrder(2);
         return registrationBean;
     }
 
