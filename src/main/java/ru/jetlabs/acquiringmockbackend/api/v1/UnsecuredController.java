@@ -38,8 +38,8 @@ public class UnsecuredController {
         return p.getFirst() ? OK(p.getSecond()): BAD;
     }
 
-    @PostMapping("/register-pay-processing/amount={amount}/to={to}/callback-url={callbackUrl}")
-    ResponseEntity<?> createPayProcessing(@PathVariable Double amount, @PathVariable String to, @PathVariable String callbackUrl){
+    @PostMapping("/register-pay-processing/amount={amount}/to={to}")
+    ResponseEntity<?> createPayProcessing(@PathVariable Double amount, @PathVariable String to, @RequestBody String callbackUrl){
         return userService.createPayProcessing(amount, to, callbackUrl);
     }
 
