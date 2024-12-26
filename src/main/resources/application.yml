@@ -21,7 +21,7 @@ jwt:
   lifetime: 30
 
 server:
-  port: 8080
+  port: ${HTTP_PORT}
 
 logging:
   level:
