@@ -130,7 +130,7 @@ public class UserService {
         Optional<AccountEntity> optAcc = accountRepository.findByNumber(payParam.number());
         if (optAcc.isEmpty()) {
             System.out.println("----------------2");
-            System.out.println(optAcc);
+            System.out.println(optAcc + " number = " + payParam.number());
             return ResponseEntity.badRequest().build();
         }
         AccountEntity a = optAcc.get();
