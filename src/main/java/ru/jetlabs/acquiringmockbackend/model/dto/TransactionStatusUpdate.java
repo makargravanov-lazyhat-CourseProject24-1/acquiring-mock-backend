@@ -4,6 +4,6 @@ import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatus;
 
 
 public record TransactionStatusUpdate (
-     String transactionUuid,
+     String uuid,
      TransactionStatus status
 ){}

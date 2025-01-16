@@ -149,8 +149,13 @@ public class UserService {
                 System.out.println("----------------4");
                 opt.get().setTransactionStatus(TransactionStatus.APPROVED);
                 System.out.println("----------------5");
-                scheduledTasksUtil.sendCallbackManually(transactionRepository.save(opt.get()));
+                scheduledTasksUtil.sendCallbackManually( transactionRepository.save(opt.get()));
                 System.out.println("----------------6");
+                a.addBalance(-opt.get().getTotal());
+                accountRepository.save(a);
+                List<AccountEntity> byOwnerId = accountRepository.findByOwnerId(Long.parseLong(payParam.number()));
+                byOwnerId.getFirst().addBalance(opt.get().getTotal());
+                accountRepository.save(byOwnerId.getFirst());
                 return ResponseEntity.ok().build();
             }
         }

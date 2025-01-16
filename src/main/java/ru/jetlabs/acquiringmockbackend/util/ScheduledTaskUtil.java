@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import ru.jetlabs.acquiringmockbackend.entity.ScheduledTasksEntity;
 import ru.jetlabs.acquiringmockbackend.entity.TransactionEntity;
+import ru.jetlabs.acquiringmockbackend.model.dto.PayParamDto;
 import ru.jetlabs.acquiringmockbackend.model.dto.TransactionNotification;
 import ru.jetlabs.acquiringmockbackend.model.dto.TransactionStatusUpdate;
 import ru.jetlabs.acquiringmockbackend.model.enumerations.TransactionStatus;
@@ -91,6 +92,7 @@ public class ScheduledTaskUtil {
                 );
 
                 if (response.getStatusCode().is2xxSuccessful()) {
+
                     scheduledTasksRepository.delete(task);
                 }
             } catch (Exception e) {
