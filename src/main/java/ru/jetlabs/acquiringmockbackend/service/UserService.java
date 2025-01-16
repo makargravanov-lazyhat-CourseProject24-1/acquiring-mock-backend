@@ -153,9 +153,8 @@ public class UserService {
                 System.out.println("----------------6");
                 a.addBalance(-opt.get().getTotal());
                 accountRepository.save(a);
-                List<AccountEntity> byOwnerId = accountRepository.findByOwnerId(Long.parseLong(payParam.number()));
-                byOwnerId.getFirst().addBalance(opt.get().getTotal());
-                accountRepository.save(byOwnerId.getFirst());
+                opt.get().getToAccount().addBalance(opt.get().getTotal());
+                accountRepository.save(opt.get().getToAccount());
                 return ResponseEntity.ok().build();
             }
         }
