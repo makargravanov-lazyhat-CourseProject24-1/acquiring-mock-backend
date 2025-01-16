@@ -123,10 +123,12 @@ public class UserService {
     public ResponseEntity<?> pay(String uuid, PayParamDto payParam) {
         Optional<TransactionEntity> opt = transactionRepository.findByUuid(uuid);
         if (opt.isEmpty() || opt.get().getTransactionStatus() != TransactionStatus.CREATED) {
+            System.out.println("1");
             return ResponseEntity.badRequest().build();
         }
         Optional<AccountEntity> optAcc = accountRepository.findByNumber(payParam.number());
         if (optAcc.isEmpty()) {
+            System.out.println("2");
             return ResponseEntity.badRequest().build();
         }
         AccountEntity a = optAcc.get();
@@ -134,12 +136,17 @@ public class UserService {
             LocalDateTime e = a.getExpirationDate();
             if (String.valueOf(e.getYear()).endsWith(payParam.expirationYear()) &&
                     e.getMonthValue() == Integer.parseInt(payParam.expirationMonth())) {
+                System.out.println("3");
                 opt.get().setFromAccount(optAcc.get());
+                System.out.println("4");
                 opt.get().setTransactionStatus(TransactionStatus.APPROVED);
+                System.out.println("5");
                 scheduledTasksUtil.sendCallbackManually(transactionRepository.save(opt.get()));
+                System.out.println("6");
                 return ResponseEntity.ok().build();
             }
         }
+        System.out.println("4");
         return ResponseEntity.badRequest().build();
     }
 }

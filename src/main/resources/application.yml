@@ -1,6 +1,5 @@
 spring:
   jpa:
-    show-sql: true
     properties:
       hibernate:
         format_sql: true
@@ -22,18 +21,3 @@ jwt:
 
 server:
   port: ${HTTP_PORT}
-
-logging:
-  level:
-    org:
-      hibernate:
-        SQL: DEBUG
-        type:
-          descriptor:
-            sql:
-              BasicBinder: TRACE
-        stat: DEBUG
-    springframework:
-      jdbc:
-        datasource:
-          init: DEBUG
