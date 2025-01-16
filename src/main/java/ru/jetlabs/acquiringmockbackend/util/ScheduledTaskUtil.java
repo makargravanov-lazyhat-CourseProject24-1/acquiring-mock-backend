@@ -83,6 +83,7 @@ public class ScheduledTaskUtil {
             );
 
             try {
+                System.out.println(statusUpdate);
                 ResponseEntity<String> response = restTemplate.postForEntity(
                         notification.task().getCallbackUrl(),
                         statusUpdate,
