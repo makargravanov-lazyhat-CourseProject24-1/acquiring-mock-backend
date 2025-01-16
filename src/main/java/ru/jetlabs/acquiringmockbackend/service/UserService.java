@@ -127,10 +127,16 @@ public class UserService {
             System.out.println(opt);
             return ResponseEntity.badRequest().build();
         }
+        payParam = new PayParamDto(payParam.number().replace(" ", ""),
+                payParam.cvv(),
+                payParam.expirationYear(),
+                payParam.expirationMonth());
+
         Optional<AccountEntity> optAcc = accountRepository.findByNumber(payParam.number());
         if (optAcc.isEmpty()) {
             System.out.println("----------------2");
-            System.out.println(optAcc + " number = " + payParam.number());
+            System.out.println(optAcc);
+            System.out.println(payParam);
             return ResponseEntity.badRequest().build();
         }
         AccountEntity a = optAcc.get();
